@@ -109,7 +109,13 @@ run_task = [
 
 [tasks.name-env]
 env = { "PROFILE_EXTERNAL_PATH" = "target/${TARGET_TRIPLE}/${PROFILE_DIR}/${MAX_EXT_NAME}.${PLATFORM_EXTERNAL_EXT}", "PROFILE_TARGET_DIR" = "target/${TARGET_TRIPLE}/${PROFILE_DIR}" }
-run_task = "add_tilde"
+run_task = [
+    { name = "name-env-workspace", condition = { env_true = ["CARGO_MAKE_IS_WORKSPACE"] } },
+    { name = "add_tilde" }
+]
+
+[tasks.name-env-workspace]
+env = { "PROFILE_TARGET_DIR" = "${CARGO_MAKE_WORKSPACE_TARGET_DIR}/${PROFILE_DIR}" }
 
 #see if we should add a tilde
 [tasks.add_tilde]
@@ -131,6 +137,7 @@ echo PLATFORM_INSTALL_DIR: ${PLATFORM_INSTALL_DIR}
 echo TARGET_ARCH: ${CARGO_MAKE_RUST_TARGET_ARCH}
 echo TARGET_OS: ${CARGO_MAKE_RUST_TARGET_OS}
 echo TARGET_TRIPLE: ${CARGO_MAKE_RUST_TARGET_TRIPLE}
+echo PROFILE_TARGET_DIR: ${PROFILE_TARGET_DIR}
 echo PROFILE_EXTERNAL_PATH: ${PROFILE_EXTERNAL_PATH}
 echo INIT_INSTALL_DIR: ${INIT_INSTALL_DIR}
 echo EXTERNAL_INSTALL_DIR: ${EXTERNAL_INSTALL_DIR}
