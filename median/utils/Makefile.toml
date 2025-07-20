@@ -110,12 +110,13 @@ run_task = [
 [tasks.name-env]
 env = { "PROFILE_EXTERNAL_PATH" = "target/${TARGET_TRIPLE}/${PROFILE_DIR}/${MAX_EXT_NAME}.${PLATFORM_EXTERNAL_EXT}", "PROFILE_TARGET_DIR" = "target/${TARGET_TRIPLE}/${PROFILE_DIR}" }
 run_task = [
-    { name = "name-env-workspace", condition = { env_true = ["CARGO_MAKE_IS_WORKSPACE"] } },
+    { name = "name-env-workspace", condition = { env_true = ["CARGO_MAKE_USE_WORKSPACE_PROFILE"] } },
     { name = "add_tilde" }
 ]
 
+#use the workspace level target directory when copying artifacts
 [tasks.name-env-workspace]
-env = { "PROFILE_TARGET_DIR" = "${CARGO_MAKE_WORKSPACE_TARGET_DIR}/${PROFILE_DIR}" }
+env = { "PROFILE_TARGET_DIR" = "../target/${TARGET_TRIPLE}/${PROFILE_DIR}" }
 
 #see if we should add a tilde
 [tasks.add_tilde]
